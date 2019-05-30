@@ -25,13 +25,22 @@ public class BinPacking implements Evaluator<Alocation> {
 	@Override
 	public Double evaluate(Solution<Alocation> sol) {
 		
-		Double maximum = Double.NEGATIVE_INFINITY;
+		Double cont = 0.0;
 		
-		for (Alocation aloc : sol) {
-			maximum = Math.max(maximum, aloc.bin);
+		boolean usedBin[] = new boolean[size];
+		
+		for (int i = 0; i < size; i++) {
+			usedBin[i] = false;
 		}
 		
-		return sol.cost = maximum;
+		for (Alocation aloc : sol) {
+			if (!usedBin[aloc.bin]) {
+				cont++;
+				usedBin[aloc.bin]= true;
+			}
+		}
+		
+		return sol.cost = cont;
 	}
 
 	@Override
@@ -46,15 +55,31 @@ public class BinPacking implements Evaluator<Alocation> {
 
 	@Override
 	public Double evaluateExchangeCost(Alocation elemIn, Alocation elemOut, Solution<Alocation> sol) {
-		Double maximum = evaluate(sol);
-		Double newMaximum = 0.0 + elemIn.bin;
-		boolean flag = false;
+
+		Double old = evaluate(sol);
+		
+		Double cont = 1.0;
+		
+		boolean usedBin[] = new boolean[size];
+		
+		for (int i = 0; i < size; i++) {
+			usedBin[i] = false;
+		}
+		usedBin[elemIn.bin] = true;
+		
+		boolean flag = true;
 		for (Alocation aloc : sol) {
-			if (flag || elemOut.equals(aloc)) maximum = Math.max(newMaximum, aloc.bin);
-			else flag = true;
+			if (flag && aloc.equals(elemOut)) {
+				flag = false;
+				continue;
+			}
+			if (!usedBin[aloc.bin]) {
+				cont++;
+				usedBin[aloc.bin] = true;
+			}
 		}
 		
-		return maximum - newMaximum;
+		return cont - old;
 	}
 
 }

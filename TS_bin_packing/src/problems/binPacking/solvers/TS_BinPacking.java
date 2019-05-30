@@ -1,5 +1,10 @@
 package problems.binPacking.solvers;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StreamTokenizer;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
@@ -9,8 +14,6 @@ import problems.binPacking.BinPacking;
 import solutions.Solution;
 
 public class TS_BinPacking extends AbstractTS<Alocation> {
-	
-	private final Double EPS = 0.01;
 	
 	private final Alocation fake = new Alocation(-1, -1);
 	
@@ -24,8 +27,8 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		super(new BinPacking(c, size, items), tenure, iterations);
 		this.c = c;
 		this.items = items;
-		bin = new Integer[ObjFunction.getDomainSize() + 1];
-		for (int i = 1; i <= ObjFunction.getDomainSize(); i++) {
+		bin = new Integer[ObjFunction.getDomainSize()];
+		for (int i = 0; i < ObjFunction.getDomainSize(); i++) {
 			bin[i] = 0;
 		}
 	}
@@ -36,7 +39,7 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		ArrayList<Alocation> _CL = new ArrayList<Alocation>();
 		
 		for (int i = 0; i < ObjFunction.getDomainSize(); i++) {
-			for (int j = 1; j <= ObjFunction.getDomainSize(); j++) {
+			for (int j = 0; j < ObjFunction.getDomainSize(); j++) {
 				_CL.add(new Alocation(items[i], j));
 			}
 		}
@@ -65,9 +68,9 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		ArrayList<Alocation> _CL = new ArrayList<Alocation>();
 		
 		for (int i = 0; i < ObjFunction.getDomainSize(); i++) {
-			for (int j = 1; j <= ObjFunction.getDomainSize(); j++) {
+			for (int j = 0; j < ObjFunction.getDomainSize(); j++) {
 				Alocation aloc = new Alocation(items[i], j);
-				if (c - bin[aloc.bin] >= aloc.item && !this.incumbentSol.contains(aloc)) _CL.add(aloc);				
+				if (c - bin[aloc.bin] >= aloc.item) _CL.add(aloc);				
 			}
 		}
 		
@@ -81,8 +84,8 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		Solution<Alocation> sol = new Solution<Alocation>();
 		
 		for (int i = 0; i < ObjFunction.getDomainSize(); i++) {
-			sol.add(new Alocation(items[i], i + 1));
-			bin[i + 1] = items[i];
+			sol.add(new Alocation(items[i], i));
+			bin[i] = items[i];
 		}
 		
 		return sol;
@@ -133,19 +136,6 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		
 		ObjFunction.evaluate(incumbentSol);
 		
-		int i = 1;
-		while (i < incumbentSol.cost) {
-			if (bin[i] == 0) {
-				for (Alocation aloc : incumbentSol) {
-					if (Math.abs(aloc.bin - incumbentSol.cost) < EPS) aloc.bin = i;
-				}
-				bin[i] = bin[(int)(incumbentSol.cost + EPS)];
-				bin[(int)(incumbentSol.cost + EPS)] = 0;
-				incumbentSol.cost -= 1;
-			}
-			i++;
-		}
-
 		return null;
 	}
 	
@@ -161,11 +151,41 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 	}
 
 	public static void main(String[] args) {
+		
+		String filename = "/home/pedro/git/MO824_Atividade7/bpp_instances/instance0.bpp";
+		
+		Integer c = 0;
+		
+		Integer n = 0;
+		Integer items[] = new Integer[0];
+		
+		try {
+			Reader fileInst = new BufferedReader(new FileReader(filename));
+			StreamTokenizer stok = new StreamTokenizer(fileInst);
+
+			stok.nextToken();
+			n = (int) stok.nval;
+			items = new Integer[n];
+			
+			stok.nextToken();
+			c = (int) stok.nval;
+			
+			System.out.println(n);
+			System.out.println(c);
+			
+			for (int i = 0; i < n; i++) {
+				stok.nextToken();
+				items[i] = (int) stok.nval;
+				System.out.println(items[i]);
+			}			
+		}
+		catch (IOException e) {
+			System.out.println("Problema na leitura do arquivo. :(");
+			System.exit(1);
+		}
+		
 		long startTime = System.currentTimeMillis();
-//		Integer items[] = {9, 8, 7, 6, 5, 5, 4, 3, 2, 1, 9, 8, 7, 6, 5, 5, 4, 3, 2, 1, 9, 8, 7, 6, 5, 5, 4, 3, 2, 1, 9, 8, 7, 6, 5, 5, 4, 3, 2, 1, 9, 8, 7, 6, 5, 5, 4, 3, 2, 1, 9, 8, 7, 6, 5, 5, 4, 3, 2, 1, 9, 8, 7, 6, 5, 5, 4, 3, 2, 1, 9, 8, 7, 6, 5, 5, 4, 3, 2, 1, 9, 8, 7, 6, 5, 5, 4, 3, 2, 1, 9, 8, 7, 6, 5, 5, 4, 3, 2, 1};
-		Integer items[] = {9, 8, 7, 6, 5, 5, 4, 3, 2, 1, 9, 8, 7, 6, 5, 5, 4, 3, 2, 1, 9, 8, 7, 6, 5, 5, 4, 3, 2, 1, 9, 8, 7, 6, 5, 5, 4, 3, 2, 1, 9, 8, 7, 6, 5, 5, 4, 3, 2, 1};
-//		Integer items[] = {9, 8, 7, 6, 5, 5, 4, 3, 2, 1};
-		TS_BinPacking tabusearch = new TS_BinPacking(20, 1000, 2500, 50, items);
+		TS_BinPacking tabusearch = new TS_BinPacking(20, 1000, c, n, items);
 		Solution<Alocation> bestSol = tabusearch.solve();
 		System.out.println("maxVal = " + bestSol);
 		long endTime   = System.currentTimeMillis();
