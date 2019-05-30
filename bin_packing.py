@@ -19,7 +19,7 @@ for i in a[2:]:
 
 
 model = Model("bin_packing")
-model.setParam("TimeLimit", 60 * 10)
+model.setParam("TimeLimit", 60)
 
 y = []
 for i in range(n):
@@ -52,10 +52,10 @@ for j in range(n):
 model.optimize()
 
 for yi in y:
-	print(yi.varname + ": " + str(yi.x))
+	if yi.x > 0.5: print(yi.varname)
 
 for xi in x:
 	for xij in xi:
-		print(xij.varname + ": " + str(xij.x))
+		if xij.x > 0.5: print(xij.varname)
 
 print("Obj: " + str(model.objVal))

@@ -199,3 +199,109 @@ Solution count 4: 70 71 76 141
 
 Time limit reached
 Best objective 7.000000000000e+01, best bound 6.500000000000e+01, gap 7.1429%
+
+Gurobi 8.1.1 (linux64, Python) logging started Thu May 30 18:52:46 2019
+
+Academic license - for non-commercial use only
+Changed value of parameter TimeLimit to 600.0
+   Prev: 1e+100  Min: 0.0  Max: 1e+100  Default: 1e+100
+Optimize a model with 402 rows, 40602 columns and 81003 nonzeros
+Variable types: 0 continuous, 40602 integer (40602 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Found heuristic solution: objective 141.0000000
+Presolve time: 0.07s
+Presolved: 402 rows, 40602 columns, 81003 nonzeros
+Variable types: 0 continuous, 40602 integer (40602 binary)
+
+Root relaxation: objective 6.500000e+01, 1130 iterations, 0.06 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   65.00000    0   89  141.00000   65.00000  53.9%     -    0s
+H    0     0                      76.0000000   65.00000  14.5%     -    0s
+H    0     0                      71.0000000   65.00000  8.45%     -    0s
+H    0     0                      69.0000000   65.00000  5.80%     -    1s
+H    0     0                      68.0000000   65.00000  4.41%     -    1s
+     0     0   65.00000    0  169   68.00000   65.00000  4.41%     -    1s
+H    0     0                      67.0000000   65.00000  2.99%     -    1s
+     0     0   65.00000    0  178   67.00000   65.00000  2.99%     -    1s
+     0     0   65.00000    0  102   67.00000   65.00000  2.99%     -    3s
+
+Cutting planes:
+  Cover: 45
+  Clique: 9
+  MIR: 15
+  StrongCG: 14
+
+Explored 1 nodes (12256 simplex iterations) in 3.26 seconds
+Thread count was 12 (of 12 available processors)
+
+Solution count 6: 67 68 69 ... 141
+
+Solve interrupted
+Best objective 6.700000000000e+01, best bound 6.500000000000e+01, gap 2.9851%
+
+Gurobi 8.1.1 (linux64, Python) logging started Thu May 30 18:52:55 2019
+
+Academic license - for non-commercial use only
+Changed value of parameter TimeLimit to 60.0
+   Prev: 1e+100  Min: 0.0  Max: 1e+100  Default: 1e+100
+Optimize a model with 402 rows, 40602 columns and 81003 nonzeros
+Variable types: 0 continuous, 40602 integer (40602 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Found heuristic solution: objective 141.0000000
+Presolve time: 0.07s
+Presolved: 402 rows, 40602 columns, 81003 nonzeros
+Variable types: 0 continuous, 40602 integer (40602 binary)
+
+Root relaxation: objective 6.500000e+01, 1130 iterations, 0.07 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   65.00000    0   89  141.00000   65.00000  53.9%     -    0s
+H    0     0                      76.0000000   65.00000  14.5%     -    0s
+H    0     0                      71.0000000   65.00000  8.45%     -    0s
+H    0     0                      69.0000000   65.00000  5.80%     -    1s
+H    0     0                      68.0000000   65.00000  4.41%     -    1s
+     0     0   65.00000    0  169   68.00000   65.00000  4.41%     -    1s
+H    0     0                      67.0000000   65.00000  2.99%     -    1s
+     0     0   65.00000    0  178   67.00000   65.00000  2.99%     -    1s
+     0     0   65.00000    0  102   67.00000   65.00000  2.99%     -    2s
+     0     0   65.00000    0   96   67.00000   65.00000  2.99%     -    3s
+     0     2   65.00000    0   90   67.00000   65.00000  2.99%     -    4s
+    31    35   65.00000    6  123   67.00000   65.00000  2.99%   204    7s
+H   34    36                      66.0000000   65.00000  1.52%   187    7s
+    40    40   65.00000    7   91   66.00000   65.00000  1.52%   160   10s
+    41    41   65.00000    6   98   66.00000   65.00000  1.52%   156   15s
+    42    42   65.00000    6  132   66.00000   65.00000  1.52%   152   38s
+    45    45   65.00000    4   96   66.00000   65.00000  1.52%   587   40s
+    51    49   65.00000    6  210   66.00000   65.00000  1.52%   518   45s
+    56    52   65.00000    7  126   66.00000   65.00000  1.52%   471   50s
+   197    97   65.00000   36  113   66.00000   65.00000  1.52%   356   55s
+   510   249 infeasible   34        66.00000   65.00000  1.52%   178   60s
+
+Cutting planes:
+  Gomory: 13
+  Cover: 54
+  Clique: 23
+  Flow cover: 2
+  Inf proof: 8
+  Zero half: 7
+
+Explored 534 nodes (116397 simplex iterations) in 60.01 seconds
+Thread count was 12 (of 12 available processors)
+
+Solution count 7: 66 67 68 ... 141
+
+Time limit reached
+Best objective 6.600000000000e+01, best bound 6.500000000000e+01, gap 1.5152%
