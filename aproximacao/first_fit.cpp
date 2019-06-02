@@ -4,10 +4,10 @@ using namespace std;
 
 int main(){
 	
-	string filename = "/home/msc2019-ceb/ra230256/git/MO824_Atividade7/bpp_instances/instance0.bpp";
+	string filename = "/home/pedro/git/MO824_Atividade7/bpp_instances/instance0.bpp";
 	
 	ifstream file;
-	file.open(filename);
+	file.open(filename.c_str());
 	
 	int n;
 	int c;
