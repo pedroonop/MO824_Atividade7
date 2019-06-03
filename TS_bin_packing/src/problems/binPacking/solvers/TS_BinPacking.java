@@ -99,8 +99,6 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		
 		updateCL();
 		
-		
-		
 		for (Alocation candIn : CL) {
 			for (Alocation candOut : incumbentSol) {
 				if (!candIn.item.equals(candOut.item)) continue;
@@ -114,11 +112,10 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 				}
 			}
 		}
-		
+				
 		TL.poll();
 		TL.poll();
 		if (bestCandIn != null) {
-			
 			bin[bestCandOut.bin] -= bestCandOut.item;
 			incumbentSol.remove(bestCandOut);
 			CL.add(bestCandOut);
@@ -169,14 +166,10 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 			
 			stok.nextToken();
 			c = (int) stok.nval;
-			
-			System.out.println(n);
-			System.out.println(c);
-			
+
 			for (int i = 0; i < n; i++) {
 				stok.nextToken();
 				items[i] = (int) stok.nval;
-				System.out.println(items[i]);
 			}			
 		}
 		catch (IOException e) {
