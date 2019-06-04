@@ -22,9 +22,9 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 	private Integer items[];
 	
 	private Integer bin[];
-
-	public TS_BinPacking(Integer tenure, Integer iterations, Integer c, Integer size, Integer items[]) {
-		super(new BinPacking(c, size, items), tenure, iterations);
+	
+	public TS_BinPacking(Integer tenure, Integer iterations, Integer c, Integer size, Integer items[], Integer timeLimit) {
+		super(new BinPacking(c, size, items), tenure, iterations, timeLimit);
 		this.c = c;
 		this.items = items;
 		bin = new Integer[ObjFunction.getDomainSize()];
@@ -149,8 +149,9 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 
 	public static void main(String[] args) {
 		
-		String filename = "/home/pedro/git/MO824_Atividade7/bpp_instances/instance0.bpp";
-		
+		String filename = args[0];
+		Integer timeLimit = Integer.parseInt(args[1]);
+
 		Integer c = 0;
 		
 		Integer n = 0;
@@ -178,7 +179,7 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		}
 		
 		long startTime = System.currentTimeMillis();
-		TS_BinPacking tabusearch = new TS_BinPacking(20, 1000, c, n, items);
+		TS_BinPacking tabusearch = new TS_BinPacking(20, 1000000, c, n, items, timeLimit);
 		Solution<Alocation> bestSol = tabusearch.solve();
 		System.out.println("maxVal = " + bestSol);
 		long endTime   = System.currentTimeMillis();

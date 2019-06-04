@@ -23,7 +23,7 @@ public abstract class AbstractTS<E> {
 	 * flag that indicates whether the code should print more information on
 	 * screen
 	 */
-	public static boolean verbose = true;
+	public static boolean verbose = false;
 
 	/**
 	 * a random number generator
@@ -79,6 +79,8 @@ public abstract class AbstractTS<E> {
 	 * the Tabu List of elements to enter the solution.
 	 */
 	protected ArrayDeque<E> TL;
+	
+	private Integer timeLimit;
 
 	/**
 	 * Creates the Candidate List, which is an ArrayList of candidate elements
@@ -142,10 +144,11 @@ public abstract class AbstractTS<E> {
 	 * @param iterations
 	 *            The number of iterations which the TS will be executed.
 	 */
-	public AbstractTS(Evaluator<E> objFunction, Integer tenure, Integer iterations) {
+	public AbstractTS(Evaluator<E> objFunction, Integer tenure, Integer iterations, Integer timeLimit) {
 		this.ObjFunction = objFunction;
 		this.tenure = tenure;
 		this.iterations = iterations;
+		this.timeLimit = timeLimit;
 	}
 
 	/**
@@ -217,6 +220,7 @@ public abstract class AbstractTS<E> {
 		bestSol = createEmptySol();
 		constructiveHeuristic();
 		TL = makeTL();
+		long startTime = System.currentTimeMillis();
 		for (int i = 0; i < iterations; i++) {
 			neighborhoodMove();
 			if (bestSol.cost > incumbentSol.cost) {
@@ -224,6 +228,8 @@ public abstract class AbstractTS<E> {
 				if (verbose)
 					System.out.println("(Iter. " + i + ") BestSol = " + bestSol);
 			}
+			long currentTime = System.currentTimeMillis();
+			if ((currentTime - startTime) > timeLimit) break;
 		}
 
 		return bestSol;
