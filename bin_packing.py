@@ -1,6 +1,8 @@
+import sys
 from gurobipy import *
 
-filename = "bpp_instances/instance0.bpp"
+filename = sys.argv[1]
+timeLimit = int(sys.argv[2])
 
 f = open(filename, "r")
 
@@ -19,7 +21,7 @@ for i in a[2:]:
 
 
 model = Model("bin_packing")
-model.setParam("TimeLimit", 60)
+model.setParam("TimeLimit", timeLimit)
 
 y = []
 for i in range(n):

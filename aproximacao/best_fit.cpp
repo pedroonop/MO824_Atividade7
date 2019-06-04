@@ -2,10 +2,10 @@
 
 using namespace std;
 
-int main(){
+int main(int argc, char *argv[]){
 	
-	string filename = "/home/pedro/git/MO824_Atividade7/bpp_instances/instance9.bpp";
-	
+	string filename = argv[1];
+
 	ifstream file;
 	file.open(filename.c_str());
 	

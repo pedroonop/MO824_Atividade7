@@ -305,3 +305,52 @@ Solution count 7: 66 67 68 ... 141
 
 Time limit reached
 Best objective 6.600000000000e+01, best bound 6.500000000000e+01, gap 1.5152%
+
+Gurobi 8.1.0 (linux64, Python) logging started Mon Jun  3 23:55:00 2019
+
+Academic license - for non-commercial use only
+Changed value of parameter TimeLimit to 10.0
+   Prev: 1e+100  Min: 0.0  Max: 1e+100  Default: 1e+100
+Optimize a model with 402 rows, 40602 columns and 81003 nonzeros
+Variable types: 0 continuous, 40602 integer (40602 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+03]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Found heuristic solution: objective 141.0000000
+Presolve time: 0.22s
+Presolved: 402 rows, 40602 columns, 81003 nonzeros
+Variable types: 0 continuous, 40602 integer (40602 binary)
+
+Root relaxation: objective 6.500000e+01, 1130 iterations, 0.17 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   65.00000    0   89  141.00000   65.00000  53.9%     -    1s
+H    0     0                      76.0000000   65.00000  14.5%     -    1s
+H    0     0                      71.0000000   65.00000  8.45%     -    1s
+H    0     0                      69.0000000   65.00000  5.80%     -    2s
+     0     0   65.00000    0  169   69.00000   65.00000  5.80%     -    2s
+     0     0   65.00000    0  178   69.00000   65.00000  5.80%     -    2s
+     0     0   65.00000    0  108   69.00000   65.00000  5.80%     -    3s
+     0     0   65.00000    0  100   69.00000   65.00000  5.80%     -    4s
+H    0     0                      67.0000000   65.00000  2.99%     -    4s
+H    0     0                      66.0000000   65.00000  1.52%     -    4s
+     0     2   65.00000    0   99   66.00000   65.00000  1.52%     -    6s
+
+Cutting planes:
+  Gomory: 20
+  Cover: 27
+  Clique: 2
+  StrongCG: 1
+  Zero half: 8
+
+Explored 4 nodes (35647 simplex iterations) in 10.05 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 6: 66 67 69 ... 141
+
+Time limit reached
+Best objective 6.600000000000e+01, best bound 6.500000000000e+01, gap 1.5152%
