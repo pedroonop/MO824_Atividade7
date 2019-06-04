@@ -80,7 +80,7 @@ public abstract class AbstractTS<E> {
 	 */
 	protected ArrayDeque<E> TL;
 	
-	private Integer timeLimit;
+	protected Integer timeLimit;
 
 	/**
 	 * Creates the Candidate List, which is an ArrayList of candidate elements
