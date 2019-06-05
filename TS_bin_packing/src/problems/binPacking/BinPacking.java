@@ -36,10 +36,11 @@ public class BinPacking implements Evaluator<Alocation> {
 		}
 		
 		for (Alocation aloc : sol) {
-			if (!usedBin[aloc.bin]) {
-				cont++;
-				usedBin[aloc.bin]= true;
-			}
+			if (aloc.bin != -1)
+				if (!usedBin[aloc.bin]) {
+					cont++;
+					usedBin[aloc.bin]= true;
+				}
 		}
 		
 		return sol.cost = cont;
@@ -58,6 +59,10 @@ public class BinPacking implements Evaluator<Alocation> {
 	@Override
 	public Double evaluateExchangeCost(Alocation elemIn, Alocation elemOut, Solution<Alocation> sol) {
 		
+		if (elemOut.bin == -1)
+			return c/1.0;
+		
+		
 		Double bin[] = new Double[size];
 		
 		for (int i = 0; i < size; i++) {
@@ -65,7 +70,8 @@ public class BinPacking implements Evaluator<Alocation> {
 		}
 		
 		for (Alocation aloc : sol) {
-			bin[aloc.bin] += aloc.item;
+			if (aloc.bin != -1)
+				bin[aloc.bin] += aloc.item;
 		}
 	
 		if (bin[elemIn.bin] <= 0.001) return Double.POSITIVE_INFINITY;

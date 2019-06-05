@@ -13,7 +13,7 @@ import problems.binPacking.Alocation;
 import problems.binPacking.BinPacking;
 import solutions.Solution;
 
-public class TS_BinPacking extends AbstractTS<Alocation> {
+public class TS_BinPacking_Diversification extends AbstractTS<Alocation> {
 	
 	private final Alocation fake = new Alocation(-1, -1);
 	
@@ -23,7 +23,9 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 	
 	private Integer bin[];
 	
-	public TS_BinPacking(Integer tenure, Integer iterations, Integer c, Integer size, Integer items[], Integer timeLimit) {
+	private Integer freq[][];
+	
+	public TS_BinPacking_Diversification(Integer tenure, Integer iterations, Integer c, Integer size, Integer items[], Integer timeLimit) {
 		super(new BinPacking(c, size, items), tenure, iterations, timeLimit);
 		this.c = c;
 		this.items = items;
@@ -31,6 +33,14 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		for (int i = 0; i < ObjFunction.getDomainSize(); i++) {
 			bin[i] = 0;
 		}
+		freq = new Integer[ObjFunction.getDomainSize()][c*2];
+		
+		for (int i = 0; i < ObjFunction.getDomainSize(); i++) {
+			for (int j = 0; j < 2*c; j++) {
+				freq[i][j] = 0;
+			}
+		}
+		
 	}
 
 	@Override
@@ -70,7 +80,7 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		for (int i = 0; i < ObjFunction.getDomainSize(); i++) {
 			for (int j = 0; j < ObjFunction.getDomainSize(); j++) {
 				Alocation aloc = new Alocation(items[i], j);
-				if (c - bin[aloc.bin] >= aloc.item && bin[aloc.bin] > 0) _CL.add(aloc);		
+				if (c - bin[aloc.bin] >= aloc.item) _CL.add(aloc);				
 			}
 		}
 		
@@ -102,10 +112,8 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		for (Alocation candIn : CL) {
 			for (Alocation candOut : incumbentSol) {
 				if (!candIn.item.equals(candOut.item)) continue;
-				if (candIn.bin.equals(candOut.bin)) continue;
-				Double folga = (double) (c - bin[candOut.bin]);
-				Double deltaCost = -(folga * folga) / (c * c);
-				if (incumbentSol.cost+deltaCost <= bestSol.cost - 0.9999 || (!TL.contains(candIn) && !TL.contains(candOut))) {
+				Double deltaCost = ObjFunction.evaluateExchangeCost(candIn, candOut, incumbentSol);
+				if ((!TL.contains(candIn) && !TL.contains(candOut)) || incumbentSol.cost+deltaCost < bestSol.cost) {
 					if (deltaCost < minDeltaCost) {
 						minDeltaCost = deltaCost;
 						bestCandIn = candIn;
@@ -114,7 +122,6 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 				}
 			}
 		}
-		
 				
 		TL.poll();
 		TL.poll();
@@ -128,6 +135,9 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 			incumbentSol.add(bestCandIn);
 			CL.remove(bestCandIn);
 			TL.add(bestCandIn);
+			
+			freq[bestCandIn.bin][bestCandIn.item]++;
+			
 		}
 		else {
 			TL.add(fake);
@@ -149,18 +159,69 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		
 		return incumbentSol;
 	}
+	
+	public void Diversification () {
+		int b = 0, item = 0, f = Integer.MAX_VALUE;
+		for (int i = 0; i < ObjFunction.getDomainSize(); i++) {
+			for (Alocation cand : incumbentSol) {
+				if (freq[i][cand.item] < f) {
+					f = freq[i][cand.item];
+					b = i;
+					item = cand.item;
+				}
+			}
+		}
+		
+		if (bin[b] != c) {
+			boolean flag = true;
+			for (Alocation cand : incumbentSol) {
+				if (cand.bin == b) {
+					cand.bin = 0;
+				}
+				if (cand.item == item && flag) {
+					bin[cand.bin] -= cand.item;
+					cand.bin = b;
+					flag = false;
+				}
+			}
+		}
+		bin[b] = c;
+		bin[b] -= item;
+		TL.poll();
+		
+		Alocation mov = new Alocation(item,b);
+		TL.add(mov);
+		
+	}
 
-	
-	
+	@Override
+	public Solution<Alocation> solve() {
+
+		bestSol = createEmptySol();
+		constructiveHeuristic();
+		TL = makeTL();
+		long startTime = System.currentTimeMillis();
+		for (int i = 0; i < iterations; i++) {
+			neighborhoodMove();
+			if (i%15 == 0)
+				Diversification();
+			if (bestSol.cost > incumbentSol.cost) {
+				bestSol = new Solution<Alocation>(incumbentSol);
+				if (verbose)
+					System.out.println("(Iter. " + i + ") BestSol = " + bestSol);
+			}
+			long currentTime = System.currentTimeMillis();
+			if ((currentTime - startTime) > timeLimit) break;
+		}
+
+		return bestSol;
+	}
 	
 	
 	public static void main(String[] args) {
 		
 		String filename = args[0];
 		Integer timeLimit = Integer.parseInt(args[1]);
-		
-//		String filename = "/home/pedro/git/MO824_Atividade7/bpp_instances/instance0.bpp";
-//		Integer timeLimit = 100000000;
 
 		Integer c = 0;
 		
@@ -189,7 +250,7 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		}
 		
 		long startTime = System.currentTimeMillis();
-		TS_BinPacking tabusearch = new TS_BinPacking(20, 1000000, c, n, items, timeLimit);
+		TS_BinPacking_Diversification tabusearch = new TS_BinPacking_Diversification(20, 10000000, c, n, items, timeLimit);
 		Solution<Alocation> bestSol = tabusearch.solve();
 		System.out.println("maxVal = " + bestSol);
 		long endTime   = System.currentTimeMillis();
