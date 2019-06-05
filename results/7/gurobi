@@ -1,0 +1,52 @@
+Academic license - for non-commercial use only
+Changed value of parameter TimeLimit to 600.0
+   Prev: 1e+100  Min: 0.0  Max: 1e+100  Default: 1e+100
+Optimize a model with 1602 rows, 642402 columns and 1284003 nonzeros
+Variable types: 0 continuous, 642402 integer (642402 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+04]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Found heuristic solution: objective 531.0000000
+Presolve time: 3.26s
+Presolved: 1602 rows, 642402 columns, 1284003 nonzeros
+Variable types: 0 continuous, 642402 integer (642402 binary)
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    0.0000000e+00   1.066480e+05   0.000000e+00      6s
+    4155    2.6500000e+02   0.000000e+00   0.000000e+00      9s
+
+Root relaxation: objective 2.650000e+02, 4155 iterations, 4.48 seconds
+Total elapsed time = 20.75s
+Total elapsed time = 30.81s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0  265.00000    0  374  531.00000  265.00000  50.1%     -   36s
+H    0     0                     327.0000000  265.00000  19.0%     -   36s
+H    0     0                     292.0000000  265.00000  9.25%     -   37s
+H    0     0                     279.0000000  265.00000  5.02%     -   53s
+     0     0  265.00000    0  535  279.00000  265.00000  5.02%     -   56s
+     0     0  265.00000    0  601  279.00000  265.00000  5.02%     -   63s
+     0     0  265.00000    0  408  279.00000  265.00000  5.02%     -   94s
+     0     0  265.00000    0  398  279.00000  265.00000  5.02%     -  110s
+H    0     0                     274.0000000  265.00000  3.28%     -  116s
+H    0     0                     272.0000000  265.00000  2.57%     -  120s
+     0     2  265.00000    0  381  272.00000  265.00000  2.57%     -  221s
+     1     4  265.00000    1  393  272.00000  265.00000  2.57% 10152  225s
+     3     8  265.00000    2  466  272.00000  265.00000  2.57%  3673  235s
+     7    14  265.00000    3  484  272.00000  265.00000  2.57%  2104  261s
+    13    20  265.00000    4  472  272.00000  265.00000  2.57%  1705  303s
+    19    24  265.00000    5  472  272.00000  265.00000  2.57%  1487  305s
+    53    59  265.00000    9  516  272.00000  265.00000  2.57%  1172  317s
+    93    93  265.00000   13  513  272.00000  265.00000  2.57%  1312  333s
+   188   188  265.00000   25  524  272.00000  265.00000  2.57%  1403  359s
+   344   344  265.00000   44  515  272.00000  265.00000  2.57%  1401  471s
+H  345   346                     271.0000000  265.00000  2.21%  1397  471s
+   350   351  265.00000   44  502  271.00000  265.00000  2.21%  1417  500s
+   468   469  265.00000   61  485  271.00000  265.00000  2.21%  1473  548s
+H  470   469                     269.0000000  265.00000  1.49%  1467  548s
