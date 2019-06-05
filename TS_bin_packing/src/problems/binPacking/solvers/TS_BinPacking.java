@@ -70,7 +70,7 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		for (int i = 0; i < ObjFunction.getDomainSize(); i++) {
 			for (int j = 0; j < ObjFunction.getDomainSize(); j++) {
 				Alocation aloc = new Alocation(items[i], j);
-				if (c - bin[aloc.bin] >= aloc.item) _CL.add(aloc);				
+				if (c - bin[aloc.bin] >= aloc.item && bin[aloc.bin] > 0) _CL.add(aloc);		
 			}
 		}
 		
@@ -102,8 +102,10 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		for (Alocation candIn : CL) {
 			for (Alocation candOut : incumbentSol) {
 				if (!candIn.item.equals(candOut.item)) continue;
-				Double deltaCost = ObjFunction.evaluateExchangeCost(candIn, candOut, incumbentSol);
-				if ((!TL.contains(candIn) && !TL.contains(candOut)) || incumbentSol.cost+deltaCost < bestSol.cost) {
+				if (candIn.bin.equals(candOut.bin)) continue;
+				Double folga = (double) (c - bin[candOut.bin]);
+				Double deltaCost = -(folga * folga) / (c * c);
+				if (incumbentSol.cost+deltaCost <= bestSol.cost - 0.9999 || (!TL.contains(candIn) && !TL.contains(candOut))) {
 					if (deltaCost < minDeltaCost) {
 						minDeltaCost = deltaCost;
 						bestCandIn = candIn;
@@ -112,6 +114,7 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 				}
 			}
 		}
+		
 				
 		TL.poll();
 		TL.poll();
@@ -151,6 +154,9 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		
 		String filename = args[0];
 		Integer timeLimit = Integer.parseInt(args[1]);
+		
+//		String filename = "/home/pedro/git/MO824_Atividade7/bpp_instances/instance0.bpp";
+//		Integer timeLimit = 100000000;
 
 		Integer c = 0;
 		
