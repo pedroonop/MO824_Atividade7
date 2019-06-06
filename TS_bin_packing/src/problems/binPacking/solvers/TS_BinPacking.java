@@ -100,21 +100,25 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		updateCL();
 		
 		for (Alocation candIn : CL) {
+			if (minDeltaCost <= -0.99999) {
+				break;
+			}
 			for (Alocation candOut : incumbentSol) {
 				if (!candIn.item.equals(candOut.item)) continue;
 				if (candIn.bin.equals(candOut.bin)) continue;
-				Double folga = (double) (c - bin[candOut.bin]);
-				Double deltaCost = -(folga * folga) / (c * c);
-				if (incumbentSol.cost+deltaCost <= bestSol.cost - 0.9999 || (!TL.contains(candIn) && !TL.contains(candOut))) {
+				Double folga = (double) (c - bin[candOut.bin] + candOut.item);
+				Double aux = (folga/c);
+				Double deltaCost = -aux*aux;
+				if (incumbentSol.cost+deltaCost <= bestSol.cost - 0.99999 || (!TL.contains(candIn) && !TL.contains(candOut))) {
 					if (deltaCost < minDeltaCost) {
 						minDeltaCost = deltaCost;
 						bestCandIn = candIn;
 						bestCandOut = candOut;
 					}
 				}
+				if (minDeltaCost <= -0.99999) break;
 			}
-		}
-		
+		}		
 				
 		TL.poll();
 		TL.poll();
@@ -156,11 +160,11 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 	
 	public static void main(String[] args) {
 		
-		String filename = args[0];
-		Integer timeLimit = Integer.parseInt(args[1]);
+//		String filename = args[0];
+//		Integer timeLimit = Integer.parseInt(args[1]);
 		
-//		String filename = "/home/pedro/git/MO824_Atividade7/bpp_instances/instance0.bpp";
-//		Integer timeLimit = 100000000;
+		String filename = "/home/pedro/git/MO824_Atividade7/bpp_instances/instance9.bpp";
+		Integer timeLimit = 1000*60*10;
 
 		Integer c = 0;
 		
@@ -189,7 +193,7 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		}
 		
 		long startTime = System.currentTimeMillis();
-		TS_BinPacking tabusearch = new TS_BinPacking(20, 1000000, c, n, items, timeLimit);
+		TS_BinPacking tabusearch = new TS_BinPacking(20, 1000, c, n, items, timeLimit);
 		Solution<Alocation> bestSol = tabusearch.solve();
 		System.out.println("maxVal = " + bestSol);
 		long endTime   = System.currentTimeMillis();

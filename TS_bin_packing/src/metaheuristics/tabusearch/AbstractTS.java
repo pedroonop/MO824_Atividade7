@@ -23,7 +23,7 @@ public abstract class AbstractTS<E> {
 	 * flag that indicates whether the code should print more information on
 	 * screen
 	 */
-	public static boolean verbose = false;
+	public static boolean verbose = true;
 
 	/**
 	 * a random number generator
