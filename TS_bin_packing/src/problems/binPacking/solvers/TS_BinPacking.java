@@ -193,7 +193,7 @@ public class TS_BinPacking extends AbstractTS<Alocation> {
 		}
 		
 		long startTime = System.currentTimeMillis();
-		TS_BinPacking tabusearch = new TS_BinPacking(20, 1000, c, n, items, timeLimit);
+		TS_BinPacking tabusearch = new TS_BinPacking(20, 1000000, c, n, items, timeLimit);
 		Solution<Alocation> bestSol = tabusearch.solve();
 		System.out.println("maxVal = " + bestSol);
 		long endTime   = System.currentTimeMillis();
