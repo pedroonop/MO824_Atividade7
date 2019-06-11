@@ -80,7 +80,7 @@ public class TS_BinPacking_Diversification extends AbstractTS<Alocation> {
 		for (int i = 0; i < ObjFunction.getDomainSize(); i++) {
 			for (int j = 0; j < ObjFunction.getDomainSize(); j++) {
 				Alocation aloc = new Alocation(items[i], j);
-				if (c - bin[aloc.bin] >= aloc.item) _CL.add(aloc);				
+				if (c - bin[aloc.bin] >= aloc.item && bin[aloc.bin] > 0) _CL.add(aloc);		
 			}
 		}
 		
@@ -110,18 +110,25 @@ public class TS_BinPacking_Diversification extends AbstractTS<Alocation> {
 		updateCL();
 		
 		for (Alocation candIn : CL) {
+			if (minDeltaCost <= -0.99999) {
+				break;
+			}
 			for (Alocation candOut : incumbentSol) {
 				if (!candIn.item.equals(candOut.item)) continue;
-				Double deltaCost = ObjFunction.evaluateExchangeCost(candIn, candOut, incumbentSol);
-				if ((!TL.contains(candIn) && !TL.contains(candOut)) || incumbentSol.cost+deltaCost < bestSol.cost) {
+				if (candIn.bin.equals(candOut.bin)) continue;
+				Double folga = (double) (c - bin[candOut.bin] + candOut.item);
+				Double aux = (folga/c);
+				Double deltaCost = -aux*aux;
+				if (incumbentSol.cost+deltaCost <= bestSol.cost - 0.99999 || (!TL.contains(candIn) && !TL.contains(candOut))) {
 					if (deltaCost < minDeltaCost) {
 						minDeltaCost = deltaCost;
 						bestCandIn = candIn;
 						bestCandOut = candOut;
 					}
 				}
+				if (minDeltaCost <= -0.99999) break;
 			}
-		}
+		}		
 				
 		TL.poll();
 		TL.poll();
@@ -135,9 +142,7 @@ public class TS_BinPacking_Diversification extends AbstractTS<Alocation> {
 			incumbentSol.add(bestCandIn);
 			CL.remove(bestCandIn);
 			TL.add(bestCandIn);
-			
 			freq[bestCandIn.bin][bestCandIn.item]++;
-			
 		}
 		else {
 			TL.add(fake);
@@ -176,7 +181,13 @@ public class TS_BinPacking_Diversification extends AbstractTS<Alocation> {
 			boolean flag = true;
 			for (Alocation cand : incumbentSol) {
 				if (cand.bin == b) {
-					cand.bin = 0;
+					for (int i = 0;  i < c; i++) {
+						if (bin[i] + cand.item <= c && i != b) {
+							bin[i] -= cand.item;
+							cand.bin = i;
+							break;
+						}
+					}
 				}
 				if (cand.item == item && flag) {
 					bin[cand.bin] -= cand.item;
@@ -210,6 +221,7 @@ public class TS_BinPacking_Diversification extends AbstractTS<Alocation> {
 				if (verbose)
 					System.out.println("(Iter. " + i + ") BestSol = " + bestSol);
 			}
+			
 			long currentTime = System.currentTimeMillis();
 			if ((currentTime - startTime) > timeLimit) break;
 		}
